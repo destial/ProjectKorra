@@ -350,7 +350,7 @@ public class GeneralMethods {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						new BendingPlayer(uuid, player, new ArrayList<Element>(), new ArrayList<SubElement>(), new HashMap<Integer, String>(), false);
+						new BendingPlayer(uuid, player, new ArrayList<>(), new ArrayList<>(), new HashMap<>(), false);
 						ProjectKorra.log.info("Created new BendingPlayer for " + player);
 					}
 				}.runTask(ProjectKorra.plugin);
