@@ -60,7 +60,7 @@ public class HelpCommand extends PKCommand {
 		if (!this.hasPermission(sender) || !this.correctLength(sender, args.size(), 0, 1)) {
 			return;
 		} else if (args.size() == 0) {
-			final List<String> strings = new ArrayList<String>();
+			final List<String> strings = new ArrayList<>();
 			for (final PKCommand command : instances.values()) {
 				if (!command.getName().equalsIgnoreCase("help") && sender.hasPermission("bending.command." + command.getName())) {
 					strings.add(command.getProperUse());
@@ -86,7 +86,7 @@ public class HelpCommand extends PKCommand {
 		final String arg = args.get(0).toLowerCase();
 
 		if (this.isNumeric(arg)) {
-			final List<String> strings = new ArrayList<String>();
+			final List<String> strings = new ArrayList<>();
 			for (final PKCommand command : instances.values()) {
 				strings.add(command.getProperUse());
 			}
@@ -99,7 +99,7 @@ public class HelpCommand extends PKCommand {
 					sender.sendMessage(ChatColor.YELLOW + s);
 				}
 			}
-		} else if (instances.keySet().contains(arg)) {// bending help command.
+		} else if (instances.containsKey(arg)) {// bending help command.
 			instances.get(arg).help(sender, true);
 		} else if (Arrays.asList(Commands.comboaliases).contains(arg)) { // bending help elementcombo.
 			sender.sendMessage(ChatColor.GOLD + this.properUsage.replace("{command1}", ChatColor.RED + "/bending display " + arg + ChatColor.GOLD).replace("{command2}", ChatColor.RED + "/bending help <Combo Name>" + ChatColor.GOLD));
@@ -191,15 +191,15 @@ public class HelpCommand extends PKCommand {
 	@Override
 	protected List<String> getTabCompletion(final CommandSender sender, final List<String> args) {
 		if (args.size() >= 1 || !sender.hasPermission("bending.command.help")) {
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 
-		final List<String> list = new ArrayList<String>();
+		final List<String> list = new ArrayList<>();
 		for (final Element e : Element.getAllElements()) {
 			list.add(e.getName());
 		}
 
-		final List<String> abils = new ArrayList<String>();
+		final List<String> abils = new ArrayList<>();
 		for (final CoreAbility coreAbil : CoreAbility.getAbilities()) {
 			if (!(sender instanceof Player) && (!coreAbil.isHiddenAbility()) && coreAbil.isEnabled() && !abils.contains(coreAbil.getName())) {
 				abils.add(coreAbil.getName());

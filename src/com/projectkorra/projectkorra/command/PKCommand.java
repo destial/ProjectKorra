@@ -46,7 +46,7 @@ public abstract class PKCommand implements SubCommand {
 	/**
 	 * List of all command executors which extends PKCommand
 	 */
-	public static Map<String, PKCommand> instances = new HashMap<String, PKCommand>();
+	public static Map<String, PKCommand> instances = new HashMap<>();
 
 	public PKCommand(final String name, final String properUse, final String description, final String[] aliases) {
 		this.name = name;
@@ -226,7 +226,7 @@ public abstract class PKCommand implements SubCommand {
 	 * @return
 	 */
 	protected List<String> getPage(final List<String> entries, final String title, int page, final boolean sort) {
-		final List<String> strings = new ArrayList<String>();
+		final List<String> strings = new ArrayList<>();
 		if (sort) {
 			Collections.sort(entries);
 		}
@@ -235,7 +235,7 @@ public abstract class PKCommand implements SubCommand {
 			page = 1;
 		}
 		if ((page * 8) - 8 >= entries.size()) {
-			page = Math.round(entries.size() / 8) + 1;
+			page = Math.round(entries.size() / 8F) + 1;
 			if (page < 1) {
 				page = 1;
 			}
@@ -245,7 +245,7 @@ public abstract class PKCommand implements SubCommand {
 		if (entries.size() > ((page * 8) - 8)) {
 			for (int i = ((page * 8) - 8); i < entries.size(); i++) {
 				if (entries.get(i) != null) {
-					strings.add(entries.get(i).toString());
+					strings.add(entries.get(i));
 				}
 				if (i >= (page * 8) - 1) {
 					break;
@@ -257,7 +257,7 @@ public abstract class PKCommand implements SubCommand {
 
 	/** Gets a list of valid arguments that can be used in tabbing. */
 	protected List<String> getTabCompletion(final CommandSender sender, final List<String> args) {
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 }

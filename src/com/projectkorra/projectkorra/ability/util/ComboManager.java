@@ -77,7 +77,6 @@ public class ComboManager {
 				} else {
 					if (comboAbil.getComboType() instanceof ComboAbility) {
 						((ComboAbility) comboAbil.getComboType()).createNewComboInstance(player);
-						return;
 					}
 				}
 			}
@@ -98,7 +97,7 @@ public class ComboManager {
 		if (RECENTLY_USED.containsKey(name)) {
 			list = RECENTLY_USED.get(name);
 		} else {
-			list = new ArrayList<AbilityInformation>();
+			list = new ArrayList<>();
 		}
 
 		list.add(info);
@@ -130,9 +129,9 @@ public class ComboManager {
 			for (int i = 1; i <= size; i++) {
 				final AbilityInformation playerInfo = playerCombo.get(playerCombo.size() - i);
 				final AbilityInformation comboInfo = abilityCombo.get(abilityCombo.size() - i);
-				if (playerInfo.getAbilityName().equals(comboInfo.getAbilityName()) && playerInfo.getClickType() == ClickType.LEFT_CLICK_ENTITY && comboInfo.getClickType() == ClickType.LEFT_CLICK) {
-					continue;
-				} else if (!playerInfo.equalsWithoutTime(comboInfo)) {
+				if (playerInfo.getAbilityName().equals(comboInfo.getAbilityName()) && playerInfo.getClickType() == ClickType.LEFT_CLICK_ENTITY && comboInfo.getClickType() == ClickType.LEFT_CLICK) continue;
+
+				if (!playerInfo.equalsWithoutTime(comboInfo)) {
 					isValid = false;
 					break;
 				}
@@ -162,15 +161,15 @@ public class ComboManager {
 	public static ArrayList<AbilityInformation> getRecentlyUsedAbilities(final Player player, final int amount) {
 		final String name = player.getName();
 		if (!RECENTLY_USED.containsKey(name)) {
-			return new ArrayList<AbilityInformation>();
+			return new ArrayList<>();
 		}
 
 		final ArrayList<AbilityInformation> list = RECENTLY_USED.get(name);
 		if (list.size() < amount) {
-			return new ArrayList<AbilityInformation>(list);
+			return new ArrayList<>(list);
 		}
 
-		final ArrayList<AbilityInformation> tempList = new ArrayList<AbilityInformation>();
+		final ArrayList<AbilityInformation> tempList = new ArrayList<>();
 		for (int i = 0; i < amount; i++) {
 			tempList.add(0, list.get(list.size() - 1 - i));
 		}
@@ -185,7 +184,7 @@ public class ComboManager {
 	 * @return An ArrayList of the combos for that element
 	 */
 	public static ArrayList<String> getCombosForElement(final Element element) {
-		final ArrayList<String> list = new ArrayList<String>();
+		final ArrayList<String> list = new ArrayList<>();
 		for (final String comboab : COMBO_ABILITIES.keySet()) {
 			final CoreAbility coreAbil = CoreAbility.getAbility(comboab);
 			if (coreAbil == null) {

@@ -126,7 +126,7 @@ public class EarthBlast extends EarthAbility {
 	}
 
 	private Location getTargetLocation() {
-		final Entity target = GeneralMethods.getTargetedEntity(this.player, this.range, new ArrayList<Entity>());
+		final Entity target = GeneralMethods.getTargetedEntity(this.player, this.range, new ArrayList<>());
 		Location location;
 		final Material[] trans = new Material[getTransparentMaterials().length + this.getEarthbendableBlocks().size()];
 		int i = 0;
@@ -157,6 +157,16 @@ public class EarthBlast extends EarthAbility {
 		if (block == null || !this.isEarthbendable(block)) {
 			return false;
 		} else if (TempBlock.isTempBlock(block)) {
+			return false;
+		}
+
+		for (final RaiseEarth raiseEarth : getAbilities(RaiseEarth.class)) {
+			if (raiseEarth.getAffectedBlocks().contains(block) || raiseEarth.getAffectedBlocks().containsKey(block)) return false;
+		}
+
+		if (EarthAbility.getMovedEarth().containsKey(block)) return false;
+
+		if (Collapse.blockInAllAffectedBlocks(block)) {
 			return false;
 		}
 
@@ -217,7 +227,6 @@ public class EarthBlast extends EarthAbility {
 
 			if (this.isAtDestination) {
 				this.remove();
-				return;
 			} else {
 				if (!this.isProgressing) {
 					return;
@@ -327,8 +336,8 @@ public class EarthBlast extends EarthAbility {
 					this.isProgressing = false;
 				}
 
-				return;
 			}
+			return;
 		}
 	}
 

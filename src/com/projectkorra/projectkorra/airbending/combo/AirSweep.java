@@ -40,7 +40,7 @@ public class AirSweep extends AirAbility implements ComboAbility {
 	private Location currentLoc;
 	private Location destination;
 	private Vector direction;
-	private ArrayList<Entity> affectedEntities;
+	private final ArrayList<Entity> affectedEntities;
 	private ArrayList<BukkitRunnable> tasks;
 	private double radius;
 
@@ -199,7 +199,7 @@ public class AirSweep extends AirAbility implements ComboAbility {
 						if (this.knockback != 0) {
 							final Vector force = fstream.getLocation().getDirection();
 							GeneralMethods.setVelocity(this, entity, force.clone().multiply(this.knockback));
-							new HorizontalVelocityTracker(entity, this.player, 200l, this);
+							new HorizontalVelocityTracker(entity, this.player, 200L, this);
 							entity.setFallDistance(0);
 						}
 						if(!this.affectedEntities.contains(entity)) {

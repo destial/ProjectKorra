@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class BindCommand extends PKCommand {
 	private final String unbindable;
 
 	public BindCommand() {
-		super("bind", "/bending bind <Ability> [Slot]", ConfigManager.languageConfig.get().getString("Commands.Bind.Description"), new String[] { "bind", "b" });
+		super("bind", "/bending bind <Ability> [Slot] [Player]", ConfigManager.languageConfig.get().getString("Commands.Bind.Description"), new String[] { "bind", "b" });
 
 		this.abilityDoesntExist = ConfigManager.languageConfig.get().getString("Commands.Bind.AbilityDoesntExist");
 		this.wrongNumber = ConfigManager.languageConfig.get().getString("Commands.Bind.WrongNumber");
@@ -47,11 +48,11 @@ public class BindCommand extends PKCommand {
 
 	@Override
 	public void execute(final CommandSender sender, final List<String> args) {
-		if (!this.hasPermission(sender) || !this.correctLength(sender, args.size(), 1, 2) || !this.isPlayer(sender)) {
+		if (!this.hasPermission(sender) || !this.correctLength(sender, args.size(), 1, 3)) {
 			return;
 		}
-
 		final CoreAbility coreAbil = CoreAbility.getAbility(args.get(0));
+
 		if (coreAbil == null || !coreAbil.isEnabled()) {
 			GeneralMethods.sendBrandingMessage(sender, ChatColor.RED + this.abilityDoesntExist.replace("{ability}", args.get(0)));
 			return;
@@ -62,20 +63,46 @@ public class BindCommand extends PKCommand {
 
 		// bending bind [Ability].
 		if (args.size() == 1) {
-			this.bind(sender, args.get(0), ((Player) sender).getInventory().getHeldItemSlot() + 1);
+			if (!isPlayer(sender)) return;
+			this.bind(sender, coreAbil, ((Player) sender).getInventory().getHeldItemSlot() + 1);
+			return;
 		}
 
 		// bending bind [ability] [#].
 		if (args.size() == 2) {
+			if (!isPlayer(sender)) return;
 			try {
-				this.bind(sender, args.get(0), Integer.parseInt(args.get(1)));
+				if (args.get(1).trim().equalsIgnoreCase("current")) {
+					Player player = (Player) sender;
+					this.bind(sender, coreAbil, player.getInventory().getHeldItemSlot() + 1);
+				} else {
+					this.bind(sender, coreAbil, Integer.parseInt(args.get(1)));
+				}
+			} catch (final NumberFormatException ex) {
+				GeneralMethods.sendBrandingMessage(sender, ChatColor.RED + this.wrongNumber);
+			}
+			return;
+		}
+
+		if (args.size() == 3) {
+			try {
+				Player getPlayer = Bukkit.getPlayer(args.get(2));
+				if (getPlayer != null) {
+					if (args.get(1).trim().equalsIgnoreCase("current")) {
+						this.bind(getPlayer, coreAbil, getPlayer.getInventory().getHeldItemSlot() + 1);
+					} else {
+						this.bind(getPlayer, coreAbil, Integer.parseInt(args.get(1)));
+					}
+				} else {
+					GeneralMethods.sendBrandingMessage(sender, ChatColor.RED + this.wrongNumber);
+				}
 			} catch (final NumberFormatException ex) {
 				GeneralMethods.sendBrandingMessage(sender, ChatColor.RED + this.wrongNumber);
 			}
 		}
 	}
 
-	private void bind(final CommandSender sender, final String ability, final int slot) {
+	private void bind(final CommandSender sender, final CoreAbility coreAbil, final int slot) {
 		if (!(sender instanceof Player)) {
 			return;
 		} else if (slot < 1 || slot > 9) {
@@ -84,7 +111,6 @@ public class BindCommand extends PKCommand {
 		}
 
 		final BendingPlayer bPlayer = BendingPlayer.getBendingPlayer((Player) sender);
-		final CoreAbility coreAbil = CoreAbility.getAbility(ability);
 		if (bPlayer == null) {
 			GeneralMethods.sendBrandingMessage(sender, ChatColor.RED + this.loadingInfo);
 			return;
@@ -108,14 +134,14 @@ public class BindCommand extends PKCommand {
 			GeneralMethods.sendBrandingMessage(sender, ChatColor.RED + this.toggledElementOff);
 		}
 
-		final String name = coreAbil != null ? coreAbil.getName() : null;
+		final String name = coreAbil.getName();
 		GeneralMethods.bindAbility((Player) sender, name, slot);
 	}
 
 	@Override
 	protected List<String> getTabCompletion(final CommandSender sender, final List<String> args) {
 		if (args.size() >= 2 || !sender.hasPermission("bending.command.bind") || !(sender instanceof Player)) {
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 
 		List<String> abilities = new ArrayList<String>();

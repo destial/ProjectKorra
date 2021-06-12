@@ -367,7 +367,7 @@ public class BendingPlayer {
 	public boolean canBind(final CoreAbility ability) {
 		if (ability == null || !this.player.isOnline() || !ability.isEnabled()) {
 			return false;
-		} else if (!this.player.hasPermission("bending.ability." + ability.getName())) {
+		} else if (!this.player.hasPermission("bending.ability." + ability.getName().toLowerCase())) {
 			return false;
 		} else if (!this.hasElement(ability.getElement()) && !(ability instanceof AvatarAbility && !((AvatarAbility) ability).requireAvatar())) {
 			return false;
@@ -376,12 +376,8 @@ public class BendingPlayer {
 			if (!this.hasElement(subElement.getParentElement())) {
 				return false;
 			}
-
-			if (!this.hasSubElement(subElement)) {
-				return false;
-			}
+			return this.hasSubElement(subElement);
 		}
-
 		return true;
 	}
 

@@ -1798,45 +1798,7 @@ public class GeneralMethods {
 	}
 
 	public static boolean isWeapon(final Material mat) {
-	
-		switch(mat) {
-			case BOW:
-			case CROSSBOW:
-			case DIAMOND_AXE:
-			case DIAMOND_HOE:
-			case DIAMOND_PICKAXE:
-			case DIAMOND_SHOVEL:
-			case DIAMOND_SWORD:
-			case GOLDEN_AXE:
-			case GOLDEN_HOE:
-			case GOLDEN_PICKAXE:
-			case GOLDEN_SHOVEL:
-			case GOLDEN_SWORD:
-			case IRON_AXE:
-			case IRON_HOE:
-			case IRON_PICKAXE:
-			case IRON_SHOVEL:
-			case IRON_SWORD:
-			case NETHERITE_AXE:
-			case NETHERITE_HOE:
-			case NETHERITE_PICKAXE:
-			case NETHERITE_SHOVEL:
-			case NETHERITE_SWORD:
-			case STONE_AXE:
-			case STONE_HOE:
-			case STONE_PICKAXE:
-			case STONE_SHOVEL:
-			case STONE_SWORD:
-			case TRIDENT:
-			case WOODEN_AXE:
-			case WOODEN_HOE:
-			case WOODEN_PICKAXE:
-			case WOODEN_SHOVEL:
-			case WOODEN_SWORD:
-				return true;
-			default:
-				return false;
-		}
+		return mat != Material.AIR;
 	}
 
 	public static void loadBendingPlayer(final BendingPlayer pl) {
@@ -1876,12 +1838,11 @@ public class GeneralMethods {
 			final HashMap<Integer, String> bound = bPlayer.getAbilities();
 			for (final String str : bound.values()) {
 				if (str.equalsIgnoreCase("AirSpout") || str.equalsIgnoreCase("WaterSpout") || str.equalsIgnoreCase("SandSpout")) {
-					final Player fplayer = player;
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							fplayer.setFlying(false);
-							fplayer.setAllowFlight(false);
+							player.setFlying(false);
+							player.setAllowFlight(false);
 						}
 					}.runTaskLater(ProjectKorra.plugin, 2);
 					break;
@@ -1892,7 +1853,7 @@ public class GeneralMethods {
 	}
 
 	public static void reloadPlugin(final CommandSender sender) {
-		ProjectKorra.log.info("Reloading ProjectKorra and configuration");
+		ProjectKorra.log.info("Reloading Bending and configuration");
 		final BendingReloadEvent event = new BendingReloadEvent(sender);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
@@ -1921,7 +1882,7 @@ public class GeneralMethods {
 		DBConnection.init();
 
 		if (!DBConnection.isOpen()) {
-			ProjectKorra.log.severe("Unable to enable ProjectKorra due to the database not being open");
+			ProjectKorra.log.severe("Unable to enable Bending due to the database not being open");
 			stopPlugin();
 		}
 		for (final Player player : Bukkit.getOnlinePlayers()) {
@@ -1929,7 +1890,7 @@ public class GeneralMethods {
 			GeneralMethods.createBendingPlayer(player.getUniqueId(), player.getName());
 			PassiveManager.registerPassives(player);
 		}
-		plugin.updater.checkUpdate();
+		//plugin.updater.checkUpdate();
 		ProjectKorra.log.info("Reload complete");
 	}
 
@@ -2359,13 +2320,13 @@ public class GeneralMethods {
 			color = ChatColor.GOLD;
 		}
 
-		final String prefix = ChatColor.translateAlternateColorCodes('&', ConfigManager.languageConfig.get().getString("Chat.Branding.ChatPrefix.Prefix")) + color + "ProjectKorra" + ChatColor.translateAlternateColorCodes('&', ConfigManager.languageConfig.get().getString("Chat.Branding.ChatPrefix.Suffix"));
+		final String prefix = ChatColor.translateAlternateColorCodes('&', ConfigManager.languageConfig.get().getString("Chat.Branding.ChatPrefix.Prefix")) + color + "Bending" + ChatColor.translateAlternateColorCodes('&', ConfigManager.languageConfig.get().getString("Chat.Branding.ChatPrefix.Suffix"));
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(prefix + message);
 		} else {
 			final TextComponent prefixComponent = new TextComponent(prefix);
 			prefixComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://projectkorra.com/"));
-			prefixComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color + "Bending brought to you by ProjectKorra!\n" + color + "Click for more info.").create()));
+			//prefixComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color + "Bending brought to you by ProjectKorra!\n" + color + "Click for more info.").create()));
 
 			/*
 			 * The commented code below does not work due to an issue with

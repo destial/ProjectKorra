@@ -13,14 +13,14 @@ public interface SubCommand {
 	 *
 	 * @return The command's name
 	 */
-	public String getName();
+	String getName();
 
 	/**
 	 * Gets the aliases for the command.
 	 *
 	 * @return All aliases for the command
 	 */
-	public String[] getAliases();
+	String[] getAliases();
 
 	/**
 	 * Gets the proper use of the command, in the format '/b
@@ -28,14 +28,14 @@ public interface SubCommand {
 	 *
 	 * @return the proper use of the command
 	 */
-	public String getProperUse();
+	String getProperUse();
 
 	/**
 	 * Gets the description of the command.
 	 *
 	 * @return the description
 	 */
-	public String getDescription();
+	String getDescription();
 
 	/**
 	 * Outputs the correct usage, and optionally the description, of a command
@@ -45,7 +45,7 @@ public interface SubCommand {
 	 * @param description Whether or not to output the description of the
 	 *            command
 	 */
-	public void help(CommandSender sender, boolean description);
+	void help(CommandSender sender, boolean description);
 
 	/**
 	 * Executes the command.
@@ -53,5 +53,5 @@ public interface SubCommand {
 	 * @param sender The CommandSender who issued the command
 	 * @param args the command's arguments
 	 */
-	public void execute(CommandSender sender, List<String> args);
+	void execute(CommandSender sender, List<String> args);
 }

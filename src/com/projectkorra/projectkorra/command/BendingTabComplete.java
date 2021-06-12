@@ -34,7 +34,7 @@ public class BendingTabComplete implements TabCompleter {
 			}
 		}
 
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 	/**

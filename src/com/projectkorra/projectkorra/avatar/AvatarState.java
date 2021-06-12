@@ -2,6 +2,9 @@ package com.projectkorra.projectkorra.avatar;
 
 import java.util.HashMap;
 
+import com.projectkorra.projectkorra.GeneralMethods;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -59,6 +62,9 @@ public class AvatarState extends AvatarAbility {
 			START_TIMES.put(player.getName(), System.currentTimeMillis());
 			player.getUniqueId();
 		}
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&5&l" + player.getName() + " is now in the Avatar State!"));
+		}
 	}
 
 	@Override
@@ -79,6 +85,11 @@ public class AvatarState extends AvatarAbility {
 		this.addPotionEffects();
 	}
 
+	public void remove() {
+		super.remove();
+		player.setGlowing(false);
+	}
+
 	private void addPotionEffects() {
 		if (this.regenEnabled) {
 			this.addProgressPotionEffect(PotionEffectType.REGENERATION, this.regenPower);
@@ -88,10 +99,15 @@ public class AvatarState extends AvatarAbility {
 		}
 		if (this.resistanceEnabled) {
 			this.addProgressPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, this.resistancePower);
+			addGlow();
 		}
 		if (this.fireResistanceEnabled) {
 			this.addProgressPotionEffect(PotionEffectType.FIRE_RESISTANCE, this.fireResistancePower);
 		}
+	}
+
+	private void addGlow() {
+		player.setGlowing(true);
 	}
 
 	private void addProgressPotionEffect(final PotionEffectType effect, final int power) {

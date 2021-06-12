@@ -6,7 +6,7 @@ main: com.projectkorra.projectkorra.ProjectKorra
 softdepend: [PreciousStones, WorldGuard, WorldEdit, FactionsFramework, GriefPrevention, Towny, NoCheatPlus, LWC, Residence, Kingdoms, RedProtect, PlaceholderAPI]
 commands:
   projectkorra:
-    aliases: [b,bending,mtla,tla,korra,pk,bend]
+    aliases: [b,bending,bend]
     usage: /<command>
 permissions:
   bending.admin:

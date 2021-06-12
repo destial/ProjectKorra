@@ -202,7 +202,7 @@ public class Preset {
 
 	public static boolean externalPresetExists(final String name) {
 		for (final String preset : externalPresets.keySet()) {
-			if (name.equalsIgnoreCase(preset)) {
+			if (preset.equalsIgnoreCase(name)) {
 				return true;
 			}
 		}

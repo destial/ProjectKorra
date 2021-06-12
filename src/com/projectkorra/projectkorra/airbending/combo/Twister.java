@@ -43,7 +43,7 @@ public class Twister extends AirAbility implements ComboAbility {
 	private Location currentLoc;
 	private Location destination;
 	private Vector direction;
-	private ArrayList<Entity> affectedEntities;
+	private final ArrayList<Entity> affectedEntities;
 
 	public Twister(final Player player) {
 		super(player);
