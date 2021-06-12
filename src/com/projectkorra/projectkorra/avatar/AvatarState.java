@@ -57,7 +57,6 @@ public class AvatarState extends AvatarAbility {
 		playAvatarSound(player.getLocation());
 
 		this.start();
-		this.bPlayer.addCooldown(this, true);
 		if (this.duration != 0) {
 			START_TIMES.put(player.getName(), System.currentTimeMillis());
 			player.getUniqueId();
@@ -85,9 +84,11 @@ public class AvatarState extends AvatarAbility {
 		this.addPotionEffects();
 	}
 
+	@Override
 	public void remove() {
-		super.remove();
+		this.bPlayer.addCooldown(this, true);
 		player.setGlowing(false);
+		super.remove();
 	}
 
 	private void addPotionEffects() {

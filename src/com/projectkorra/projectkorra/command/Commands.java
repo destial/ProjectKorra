@@ -77,6 +77,7 @@ public class Commands {
 		new AddCommand();
 		new BindCommand();
 		new CheckCommand();
+		new BoardCommand();
 		new ChooseCommand();
 		new ClearCommand();
 		new CopyCommand();
